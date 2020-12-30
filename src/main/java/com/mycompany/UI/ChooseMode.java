@@ -99,7 +99,7 @@ public class ChooseMode extends javax.swing.JFrame {
         jButton2.setVisible(false);
         jTextField1.setVisible(true);
 //        jButton1.setText("Start Client");
-        
+
         jButton1.setVisible(false);
         jButton2.setVisible(false);
         jButton3.setVisible(true);
@@ -116,7 +116,6 @@ public class ChooseMode extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ClientThreadChooser ctc = new ClientThreadChooser();
         ctc.jLabel4.setText("1");
-        
         ctc.jLabel3.setText(jTextField1.getText());
         dispose();
         ctc.setVisible(true);        // TODO add your handling code here:

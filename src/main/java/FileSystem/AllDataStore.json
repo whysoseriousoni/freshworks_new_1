@@ -1,11 +1,11 @@
 {
     "file1": {
-        "location": "FileSystem\temp.json",
+        "location": "C:\\Users\\WhysoseriousONI\\Documents\\NetBeansProjects\\Freshworks\\src\\main\\java\\FileSystem\\temp.json",
         "used": false,
         "client_id": 0
     },
     "file2": {
-        "location": "FileSystem\temp2.json",
+        "location": "C:\\Users\\WhysoseriousONI\\Documents\\NetBeansProjects\\Freshworks\\src\\main\\java\\FileSystem\\temp2.json",
         "used": false,
         "client_id": 0
     },

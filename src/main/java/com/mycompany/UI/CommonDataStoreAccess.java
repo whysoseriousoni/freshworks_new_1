@@ -5,6 +5,9 @@
  */
 package com.mycompany.UI;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 /**
  *
  * @author WhysoseriousONI
@@ -15,7 +18,7 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
      * Creates new form CommonDataStoreAccess
      */
     public static ThreadGrouper tg;
-
+    
     public CommonDataStoreAccess() {
         initComponents();
     }
@@ -49,6 +52,11 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setText("Read Value From File");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Write Key Value To File");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -58,6 +66,11 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
         });
 
         jButton3.setText("Delete Value in File");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Read");
 
@@ -183,6 +196,7 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ThreadGrouper.writeToFile();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -191,9 +205,22 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
 //        tg.addThreadToGroup(jLabel8.getText(), Integer.toString(Integer.parseInt(jLabel6.getText()) + 1));
         ThreadGrouper.addThreadToGroup(Integer.toString(Integer.parseInt(jLabel6.getText()) + 1));
         System.out.println(tg.group.activeCount());
-
+        
 
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        JsonElement res = ThreadGrouper.read("key1");
+        System.out.println(res);
+        jTextArea1.setText(res.getAsString());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ThreadGrouper.deleteInFile("needskey");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
