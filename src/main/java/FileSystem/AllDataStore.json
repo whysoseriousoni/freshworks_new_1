@@ -1,1 +1,27 @@
-{"file1":{"location":"FileSystem\temp.json","used":false,"client_id":0},"file2":{"location":"FileSystem\temp2.json","used":false,"client_id":0},"jLabel3":{"location":"C://Users//WhysoseriousONI//Desktop//asd.json","used":false,"client_id":"0"},"asdd":{"location":"C://Users//WhysoseriousONI//Desktop//asdd.json","used":false,"client_id":"0"},"testd1":{"location":"C://Users//WhysoseriousONI//Desktop//test.json","used":false,"client_id":"0"}}
+{
+    "file1": {
+        "location": "FileSystem\temp.json",
+        "used": false,
+        "client_id": 0
+    },
+    "file2": {
+        "location": "FileSystem\temp2.json",
+        "used": false,
+        "client_id": 0
+    },
+    "jLabel3": {
+        "location": "C://Users//WhysoseriousONI//Desktop//asd.json",
+        "used": false,
+        "client_id": "0"
+    },
+    "asdd": {
+        "location": "C://Users//WhysoseriousONI//Desktop//asdd.json",
+        "used": false,
+        "client_id": "0"
+    },
+    "testd1": {
+        "location": "C://Users//WhysoseriousONI//Desktop//test.json",
+        "used": false,
+        "client_id": "0"
+    }
+}
