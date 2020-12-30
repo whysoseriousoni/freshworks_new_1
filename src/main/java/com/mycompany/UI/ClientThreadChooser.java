@@ -19,7 +19,7 @@ public class ClientThreadChooser extends javax.swing.JFrame {
     /**
      * Creates new form LaptopThread
      */
-    ThreadGrouper tg = new ThreadGrouper("client");
+    ThreadGrouper tg;
     GlobalDecalarations gd = new GlobalDecalarations();
     JsonObject obj = gd.parse_all_ds_json();
 
@@ -63,7 +63,7 @@ public class ClientThreadChooser extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Client Mode");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,11 +107,12 @@ public class ClientThreadChooser extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(88, 88, 88)
                 .addComponent(jLabel2)
-                .addGap(107, 107, 107)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel3)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(91, 91, 91)
+                        .addGap(128, 128, 128)
                         .addComponent(jLabel5)
                         .addGap(38, 38, 38)
                         .addComponent(jLabel4))
@@ -138,12 +139,21 @@ public class ClientThreadChooser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        DefaultTableModel dtm=(DefaultTableModel)jTable1.getModel();
-        int row=jTable1.getSelectedRow();
-        int col=jTable1.getSelectedColumn();
-        if(col==3){
-            String file=(String)dtm.getValueAt(row, 0);
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        int row = jTable1.getSelectedRow();
+        int col = jTable1.getSelectedColumn();
+        if (col == 3) {
+            String file = (String) dtm.getValueAt(row, 0);
+            JsonObject data = obj.get(file).getAsJsonObject();
             System.out.println(file);
+//            if (jLabel4.getText().equals("1")) {
+            tg = ThreadGrouper.getInstance(jLabel3.getText(), file, data.get("location").getAsString());
+            tg.addThreadToGroup("1");
+            dispose();
+//            }
+//            else{
+//                tg.addThreadToGroup(file, file);
+//            }
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
@@ -185,7 +195,7 @@ public class ClientThreadChooser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel jLabel3;
     public static javax.swing.JLabel jLabel4;
