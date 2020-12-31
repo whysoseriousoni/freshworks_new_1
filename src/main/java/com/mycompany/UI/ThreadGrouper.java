@@ -45,6 +45,13 @@ class Key_time {
         this.id = superKey;
     }
 
+    public Key_time(String key, long time) {
+
+        this.key = key;
+        this.time = time;
+        this.id = key + "---" + Long.toString(time);
+    }
+
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -108,6 +115,8 @@ public class ThreadGrouper {
     public static Calendar cal = Calendar.getInstance();
     public static Scanner ss = new Scanner(System.in);
     public static List<String> keys = null;
+    public static List<Key_time> kts = null;
+
     public static JsonObject main = null;
 //    public static ConcurrentHashMap<Key_time, JsonObject> cmap = null;
 
@@ -124,24 +133,29 @@ public class ThreadGrouper {
         parse();
         keys = new ArrayList<>(main.keySet());
         keys = Collections.synchronizedList(new ArrayList<>(main.keySet()));
+        kts = Collections.synchronizedList(new ArrayList<>());
+        setKeyData();
     }
-//        setKeyData();
 
-//    public static synchronized void setKeyData() {
-//        for (int i = 0; i < keys.size(); i++) {
-//            String k = keys.get(i);
-//            String arr[] = k.split("---");
-////            cmap.put(new Key_time(arr[0], Long.parseLong(arr[1]), k), (JsonObject) main.get(keys.get(i)));
-//
-//        }
-//    }
+    public static synchronized void setKeyData() {
+        for (int i = 0; i < keys.size(); i++) {
+            String k = keys.get(i);
+            String arr[] = k.split("---");
+            kts.add(new Key_time(arr[0], Long.parseLong(arr[1])));
+//            cmap.put(new Key_time(arr[0], Long.parseLong(arr[1]), k), (JsonObject) main.get(keys.get(i)));
+
+        }
+    }
 
     public synchronized static JsonElement read(String key) {
-        key = "key1";
-        System.out.println("keys " + keys);
+
         Key_time tempKey = findKey(key, cal.getTimeInMillis());
-//        System.out.println("data from threadgrouper => " + gson.toJson(main.get(tempKey.id)));
-        return main.get(tempKey.id);
+        if (tempKey == null) {
+            return null;
+        } else {
+            System.out.println("data from threadgrouper => " + gson.toJson(main.get(tempKey.id)));
+            return main.get(tempKey.id);
+        }
     }
 
     public synchronized static void writeToFile() {
@@ -161,60 +175,65 @@ public class ThreadGrouper {
 
     public static Key_time findKey(String key, long time) {
         Key_time ret = null;
-        System.out.println(keys);
-//        System.out.println("");
-        for (int i = 0; i < keys.size(); i++) {
-            Key_time temp = new Key_time(keys.get(i).split("---")[0], Long.parseLong(keys.get(i).split("---")[1]), keys.get(i));
-                System.out.println(temp.toString()+" "+key + " " + temp.key);
-            if (temp.key.equals(key)) {
-                if (temp.time >= time || temp.time == 0) {
-                    ret = new Key_time(key, temp.time, temp.id);
-                    return ret;
-                } else if (temp.time < time) {
-                    System.out.println("KEY EXPIRED");
-                    ret = new Key_time(key, temp.time, temp.id);
-                    System.out.println(ret);
-                    System.out.println("delete called");
-                    deleteKeyValue(ret);
-                    System.out.println("null called due to time expiry");
-                    return null;
-                }
+        Key_time temp = new Key_time(key, time);
+        if (kts.contains(temp)) {
+            System.out.println("contains");
+            int index = kts.indexOf(temp);
+            ret = kts.get(index);
+
+            if (temp.time >= time || temp.time == 0) {
+//                ret = new Key_time(key, temp.time, temp.id);
+                return ret;
+            } else if (temp.time < time) {
+                System.out.println("KEY EXPIRED");
+//                ret = new Key_time(key, temp.time, temp.id);
+                System.out.println(ret);
+                System.out.println("delete called");
+                deleteKeyValue(ret);
+                System.out.println("null called due to time expiry");
+                return null;
             }
         }
         System.out.println("null called due to no element");
         return null;
     }
 
-    public synchronized static void deleteInFile(String key) {
-        key = "needskey";
+    public synchronized static int deleteInFile(String key) {
+
         Key_time tempKey = findKey(key, 0);
-        System.out.println(keys);
-        System.out.println(tempKey.toString());
-        
+//        System.out.println(keys);
+//        System.out.println(tempKey.toString());
+
         if (tempKey != null) {
-            main.remove(tempKey.id);
+            main.remove(tempKey.id); // json object
 //            cmap.remove(tempKey);
+            kts.remove(tempKey);
             keys.remove(tempKey.id);
             try ( FileWriter fw = new FileWriter(ThreadGrouper.location)) {
                 gson.toJson(main, fw);
                 System.out.println("delete successful");
+                return 1;
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
+        return 0;
     }
 
-    public synchronized static void deleteKeyValue(Key_time tempKey) {
+    public synchronized static int deleteKeyValue(Key_time tempKey) {
 
-        main.remove(tempKey.id);
-//        cmap.remove(tempKey);
         keys.remove(tempKey.id);
+        kts.remove(tempKey);
+        main.remove(tempKey.id);// json object
+//        cmap.remove(tempKey);
         try ( FileWriter fw = new FileWriter(ThreadGrouper.location)) {
             gson.toJson(main, fw);
             System.out.println("Delete successful");
+            return 1;
         } catch (Exception e) {
             System.out.println(e);
         }
+        return 0;
     }
 
     static public void parse() {
@@ -232,7 +251,7 @@ public class ThreadGrouper {
         new Thread(ThreadGrouper.group, new supportClass(ThreadGrouper.clientID, ThreadGrouper.fileName, ThreadGrouper.location, id), id + Integer.toString(group.activeCount())).start();
         group.list();
 //        System.out.println("thread count from class " + group.activeCount());
-//        System.out.println("thread group count from class " + group.activeGroupCount());
+        System.out.println("thread group count from class " + group.activeGroupCount());
     }
 
     public static ThreadGrouper getInstance(String gname, String fName, String loc) {
