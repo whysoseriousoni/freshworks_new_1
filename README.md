@@ -14,6 +14,9 @@ key---time:{
 }
 
 --- here is delimter to keep track of time
+
+File Write is thread safe
+
 Guide to project:
 1) first choose laptop and create the file
 2) then use close all threads to safely close the file 
