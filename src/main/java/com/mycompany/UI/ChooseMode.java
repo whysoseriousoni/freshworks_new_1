@@ -64,7 +64,7 @@ public class ChooseMode extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Designed and Coded by Pradeep.E from MNM Jain Engineering College");
+        jLabel1.setText("Designed and Coded by Pradeep.E from MNM Jain Engineering College. MAIL TO: OniPradeep@gmail.com");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
