@@ -26,6 +26,10 @@ Guide to project:
 5) client can access the file if the name of the client is same as the client which is being with with.
 6) after working with the file click on "close all threads" to safely close the file.
 
+Concepts applied to achieve :
+1) Singleton Class Concept
+2) ThreadGrouping Concept
+3) MultiThreading
 
 System info:
 
