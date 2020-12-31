@@ -148,11 +148,12 @@ public class ThreadGrouper {
     }
 
     public synchronized static JsonElement read(String key) {
-
+        System.out.println("time now in ms" + cal.getTimeInMillis());
         Key_time tempKey = findKey(key, cal.getTimeInMillis());
         if (tempKey == null) {
             return null;
         } else {
+            System.out.println("time in file " + tempKey.toString());
             System.out.println("data from threadgrouper => " + gson.toJson(main.get(tempKey.id)));
             return main.get(tempKey.id);
         }
@@ -180,11 +181,10 @@ public class ThreadGrouper {
             System.out.println("contains");
             int index = kts.indexOf(temp);
             ret = kts.get(index);
-
-            if (temp.time >= time || temp.time == 0) {
+            if (ret.time >= temp.time || ret.time == 0) {
 //                ret = new Key_time(key, temp.time, temp.id);
                 return ret;
-            } else if (temp.time < time) {
+            } else if (ret.time < temp.time) {
                 System.out.println("KEY EXPIRED");
 //                ret = new Key_time(key, temp.time, temp.id);
                 System.out.println(ret);
@@ -261,8 +261,27 @@ public class ThreadGrouper {
         return tg;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void stopAllThreads(String file, String loc) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("used", false);
+        obj.addProperty("client_id", "-1");
+        obj.addProperty("location", loc);
+        JsonObject tofile = new GlobalDecalarations().parse_all_ds_json();
+        tofile.add(file, obj);
+        try ( FileWriter fw = new FileWriter(GlobalDecalarations.FILESYSTEM + "\\AllDataStore.json")) {
+            gson.toJson(tofile, fw);
 
+            System.out.println("file name on stop all threads " + GlobalDecalarations.FILESYSTEM + "\\AllDataStore.json");
+            System.out.println(gson.toJson(tofile));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        ThreadGrouper.group.stop();
+        System.exit(0);
+    }
+
+//    public static void main(String[] args) throws InterruptedException {
 //        ThreadGrouper tg = new ThreadGrouper("asd", "temp2.json", "C:\\Users\\WhysoseriousONI\\Documents\\NetBeansProjects\\Freshworks\\src\\main\\java\\FileSystem\\temp2.json");
 //        ThreadGrouper tg = new ThreadGrouper("file1", "Name", "1");//("asd", "temp2.json", "C:\\Users\\WhysoseriousONI\\Documents\\NetBeansProjects\\Freshworks\\src\\main\\java\\FileSystem\\temp2.json");
 //        tg.addThreadToGroup("1");
@@ -270,6 +289,5 @@ public class ThreadGrouper {
 //
 //        System.out.println(tg.group.getName());
 //        tg.group.list();
-    }
-
+//    }
 }
