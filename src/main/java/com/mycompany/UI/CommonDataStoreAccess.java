@@ -346,7 +346,7 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
             jTextField5.setText("KEY " + jTextField1.getText() + " LENGTH IS GREATER THAN 32 ");
             jTextField1.setText("");
         } else {
-            JsonObject res = (JsonObject) ThreadGrouper.read(jTextField1.getText());
+            JsonObject res = (JsonObject) ThreadGrouper.read(jTextField1.getText(),Calendar.getInstance().getTimeInMillis());
             if (res == null) {
                 jTextArea1.setVisible(true);
 //                jTextArea1.setEditable(false);
@@ -360,6 +360,7 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
                 jTextField5.setText("READ SUCCESSFULLY");
             }
         }
+        jTextField1.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -381,6 +382,7 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
 //                jTextArea1.setEditable(false);
             }
         }
+        jTextField3.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 

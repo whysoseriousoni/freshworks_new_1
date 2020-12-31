@@ -147,9 +147,9 @@ public class ThreadGrouper {
         }
     }
 
-    public synchronized static JsonElement read(String key) {
-        System.out.println("time now in ms" + cal.getTimeInMillis());
-        Key_time tempKey = findKey(key, cal.getTimeInMillis());
+    public synchronized static JsonElement read(String key, long time) {
+        System.out.println("time now in ms" + time);
+        Key_time tempKey = findKey(key, time);
         if (tempKey == null) {
             return null;
         } else {
@@ -163,7 +163,6 @@ public class ThreadGrouper {
         String superkey = key + "---" + Long.toString(time);
 
         main.add(superkey, val);
-//        cmap.put(new Key_time(key), enterdata);
         keys.add(key);
         kts.add(new Key_time(superkey));
         try ( FileWriter fw = new FileWriter(ThreadGrouper.location)) {
@@ -181,10 +180,8 @@ public class ThreadGrouper {
             System.out.println("contains");
             int index = kts.indexOf(temp);
             ret = kts.get(index);
-            if (ret.time >= temp.time || ret.time == 0) {
-//                ret = new Key_time(key, temp.time, temp.id);
-                return ret;
-            } else if (ret.time < temp.time) {
+
+            if (ret.time < time && ret.time != 0) {
                 System.out.println("KEY EXPIRED");
 //                ret = new Key_time(key, temp.time, temp.id);
                 System.out.println(ret);
@@ -192,6 +189,9 @@ public class ThreadGrouper {
                 deleteKeyValue(ret);
                 System.out.println("null called due to time expiry");
                 return null;
+            } else if (ret.time >= time || ret.time == 0) {
+//                ret = new Key_time(key, temp.time, temp.id);
+                return ret;
             }
         }
         System.out.println("null called due to no element");

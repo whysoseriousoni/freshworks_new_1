@@ -95,10 +95,15 @@ public class laptoppage1 extends javax.swing.JFrame {
         // TODO add your handling code here:
         LapFileChooser lfc = new LapFileChooser();
         lfc.jLabel3.setText(jTextField1.getText());
+        File folder=new File(gd.FILESYSTEM);
         File chk = new File(gd.FILESYSTEM + "\\AllDataStore.json");
         if (!chk.exists()) {
             FileWriter fw;
             try {
+                boolean dir = folder.exists();
+                if(!dir){
+                    folder.mkdirs();
+                }
                 fw = new FileWriter(gd.FILESYSTEM + "\\AllDataStore.json");
                 fw.write("{}");
                 fw.flush();
