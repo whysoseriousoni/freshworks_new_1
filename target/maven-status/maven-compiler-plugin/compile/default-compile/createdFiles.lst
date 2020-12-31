@@ -12,6 +12,7 @@ com\mycompany\freshworks\MultiThread.class
 com\mycompany\freshworks\Client.class
 com\mycompany\UI\ClientThreadChooser$2.class
 com\mycompany\UI\ChooseMode$3.class
+com\mycompany\UI\LapFileChooser$4.class
 com\mycompany\UI\supportClass.class
 com\mycompany\freshworks\GlobalDecalarations.class
 com\mycompany\UI\ClientThreadChooser.class

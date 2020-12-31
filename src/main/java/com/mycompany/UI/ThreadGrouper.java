@@ -158,13 +158,13 @@ public class ThreadGrouper {
         }
     }
 
-    public synchronized static void writeToFile() {
-        String key = "needskey---0";
-        JsonObject enterdata = new JsonObject();
-        enterdata.addProperty("tempadd", "tempo value");
-        main.add(key, enterdata);
+    public synchronized static void writeToFile(String key, long time, JsonObject val) {
+        String superkey = key + "---" + Long.toString(time);
+
+        main.add(superkey, val);
 //        cmap.put(new Key_time(key), enterdata);
         keys.add(key);
+        kts.add(new Key_time(superkey));
         try ( FileWriter fw = new FileWriter(ThreadGrouper.location)) {
             gson.toJson(main, fw);
             System.out.println("write successful");
@@ -241,7 +241,7 @@ public class ThreadGrouper {
             JsonParser json = new JsonParser();
             main = (JsonObject) json.parse(reader);
         } catch (Exception e) {
-            System.out.println("null called due to cant parse the file");
+            System.out.println("null called due to cant parse the file" + ThreadGrouper.location);
             System.out.println(e);
         }
     }

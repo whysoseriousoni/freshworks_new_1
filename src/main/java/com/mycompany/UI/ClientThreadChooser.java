@@ -5,10 +5,15 @@
  */
 package com.mycompany.UI;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javax.swing.table.DefaultTableModel;
 import com.mycompany.freshworks.GlobalDecalarations;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,20 +27,25 @@ public class ClientThreadChooser extends javax.swing.JFrame {
     ThreadGrouper tg;
     GlobalDecalarations gd = new GlobalDecalarations();
     JsonObject obj = gd.parse_all_ds_json();
+    Gson gson = new Gson();
 
     void tableInit() {
-
-        ArrayList<String> keys = new ArrayList<>(obj.keySet());
-        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        for (int i = 0; i < keys.size(); i++) {
-            JsonObject data = obj.get(keys.get(i)).getAsJsonObject();
-            String cid = data.get("client_id").getAsString();
-            dtm.addRow(new Object[]{
-                new String(keys.get(i)),
-                new String(cid),
-                new Boolean(data.get("used").getAsBoolean()),
-                new String(cid.equals("0") || jLabel1.getText().equals(cid) ? "YES" : "NO")
-            });
+        if (obj == null) {
+            jLabel6.setText("DATA STORE NOT AVAILABLE OR NO DATA STORES FOUND. CREATE STORE BEFORE USING");
+            jLabel6.setVisible(true);
+        } else {
+            ArrayList<String> keys = new ArrayList<>(obj.keySet());
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            for (int i = 0; i < keys.size(); i++) {
+                JsonObject data = obj.get(keys.get(i)).getAsJsonObject();
+                String cid = data.get("client_id").getAsString();
+                dtm.addRow(new Object[]{
+                    new String(keys.get(i)),
+                    new String(cid),
+                    new Boolean(!data.get("used").getAsBoolean()),
+                    new String(!data.get("used").getAsBoolean() ? "YES" : "NO")
+                });
+            }
         }
     }
 
@@ -60,11 +70,14 @@ public class ClientThreadChooser extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Client Mode");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -88,41 +101,53 @@ public class ClientThreadChooser extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Client ID");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("jLabel3");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("jLabel4");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Thread ");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("jLabel6");
+        jLabel6.setVisible(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(96, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89))
             .addGroup(layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(jLabel2)
-                .addGap(38, 38, 38)
-                .addComponent(jLabel3)
-                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(jLabel5)
+                        .addGap(333, 333, 333)
+                        .addComponent(jLabel2)
                         .addGap(38, 38, 38)
-                        .addComponent(jLabel4))
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel3)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(128, 128, 128)
+                                .addComponent(jLabel5)
+                                .addGap(38, 38, 38)
+                                .addComponent(jLabel4))
+                            .addComponent(jLabel1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(193, 193, 193)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1071, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(jLabel6)))
+                .addContainerGap(161, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -130,9 +155,11 @@ public class ClientThreadChooser extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
-                .addGap(53, 53, 53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGap(43, 43, 43))
         );
 
         pack();
@@ -142,18 +169,30 @@ public class ClientThreadChooser extends javax.swing.JFrame {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
         int col = jTable1.getSelectedColumn();
-        if (col == 3) {
+        if (col == 3 && ((boolean) dtm.getValueAt(row, 2) == true || jLabel3.getText().equals((String) dtm.getValueAt(row, 1)))) {
+
             String file = (String) dtm.getValueAt(row, 0);
+            JsonObject temp = new JsonObject();
+
             JsonObject data = obj.get(file).getAsJsonObject();
+            String loc = data.get("location").getAsString();
+            temp.addProperty("used", true);
+            temp.addProperty("location", loc);
+            temp.addProperty("client_id", jLabel3.getText());
+
+            obj.add(file, temp);
+
+            try ( FileWriter fw = new FileWriter(gd.FILESYSTEM + "\\AllDataStore.json")) {
+                gson.toJson(obj, fw);
+                System.out.println(gson.toJson(obj));
+            } catch (IOException ex) {
+                Logger.getLogger(ClientThreadChooser.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println(file);
-//            if (jLabel4.getText().equals("1")) {
             tg = ThreadGrouper.getInstance(jLabel3.getText(), file, data.get("location").getAsString());
             tg.addThreadToGroup("1");
             dispose();
-//            }
-//            else{
-//                tg.addThreadToGroup(file, file);
-//            }
+
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
@@ -200,6 +239,7 @@ public class ClientThreadChooser extends javax.swing.JFrame {
     public static javax.swing.JLabel jLabel3;
     public static javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
