@@ -159,18 +159,22 @@ public class ThreadGrouper {
         }
     }
 
-    public synchronized static void writeToFile(String key, long time, JsonObject val) {
+    public synchronized static int writeToFile(String key, long time, JsonObject val) {
         String superkey = key + "---" + Long.toString(time);
+        if (!kts.contains(new Key_time(superkey))) {
+            main.add(superkey, val);
+            keys.add(key);
+            kts.add(new Key_time(superkey));
+            try ( FileWriter fw = new FileWriter(ThreadGrouper.location)) {
+                gson.toJson(main, fw);
+                System.out.println("write successful");
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            return 1;
 
-        main.add(superkey, val);
-        keys.add(key);
-        kts.add(new Key_time(superkey));
-        try ( FileWriter fw = new FileWriter(ThreadGrouper.location)) {
-            gson.toJson(main, fw);
-            System.out.println("write successful");
-        } catch (Exception e) {
-            System.out.println(e);
         }
+        return 0;
     }
 
     public static Key_time findKey(String key, long time) {

@@ -295,10 +295,37 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
         JsonParser jparse = new JsonParser();
         String obj = jTextArea1.getText();
         JsonObject val = new JsonObject();
+
         try {
             val = (JsonObject) jparse.parse(obj);
-            if (val.getAsString().equals("{}")) {
-                val = null;
+            int size = val.toString().getBytes().length;
+            int sizeo = obj.getBytes().length;
+            System.out.println("size in bytes " + size);
+            System.out.println("sizeo in bytes " + sizeo);
+
+            if (key.length() < 32 && size <= 16000) {
+                int res = ThreadGrouper.writeToFile(key, time, val);
+                if (res == 1) {
+                    jTextArea1.setText("");
+                    jTextField2.setText("");
+                    jTextField4.setText("");
+                    jTextField5.setText("Written successfully");
+                } else {
+                    jTextArea1.setText("");
+                    jTextField2.setText("");
+                    jTextField4.setText("");
+                    jTextField5.setText("KEY ALREADY EXISTS");
+                }
+            } else if (size > 16000) {
+                jTextField5.setText("KEY MUST BE LESS THAN 16KB OR 16000 BYTES");
+                jTextField2.setText("");
+            } else if (key.equals("")) {
+                jTextField5.setText("KEY " + jTextField2.getText() + " MUST BE GREATER THAN 0");
+                jTextField2.setText("");
+            } else {
+                jTextField5.setText("KEY " + jTextField2.getText() + " LENGTH GREATER THAN 32");
+                jTextField2.setText("");
+
             }
         } catch (Exception e) {
 
@@ -306,28 +333,9 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
             System.out.println("data error");
             System.out.println(e);
         }
+//        System.out.println(gson.toJson(val));
 
-        if (val == null) {
-            jTextField5.setText("VALUE SHOULD BE IN VALID JSON FORMAT");
-            jTextArea1.setText("");
-            jTextField2.setText("");
-            jTextField4.setText("");
-        } else if (key.length() < 32 && val != null) {
-            ThreadGrouper.writeToFile(key, time, val);
-            jTextArea1.setText("");
-            jTextField2.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("Written successfully");
 
-        } else if (key.equals("")) {
-            jTextField5.setText("KEY " + jTextField2.getText() + " MUST BE GREATER THAN 0");
-            jTextField2.setText("");
-        } else {
-            jTextField5.setText("KEY " + jTextField2.getText() + " LENGTH GREATER THAN 32");
-            jTextField2.setText("");
-
-        }
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -346,7 +354,7 @@ public class CommonDataStoreAccess extends javax.swing.JFrame {
             jTextField5.setText("KEY " + jTextField1.getText() + " LENGTH IS GREATER THAN 32 ");
             jTextField1.setText("");
         } else {
-            JsonObject res = (JsonObject) ThreadGrouper.read(jTextField1.getText(),Calendar.getInstance().getTimeInMillis());
+            JsonObject res = (JsonObject) ThreadGrouper.read(jTextField1.getText(), Calendar.getInstance().getTimeInMillis());
             if (res == null) {
                 jTextArea1.setVisible(true);
 //                jTextArea1.setEditable(false);
