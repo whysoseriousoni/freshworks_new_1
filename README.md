@@ -24,5 +24,7 @@ Guide to project:
 
 
 System info:
-Developed in : NetBeans 12.2
-Os: windows 10 pro
+
+Developed in : NetBeans 12.2<br>
+
+Os: windows 10 pro<br>
