@@ -14,3 +14,10 @@ key---time:{
 }
 
 --- here is delimter to keep track of time
+Guide to project:
+1) first choose laptop and create the file
+2) then use close all threads to safely close the file 
+3) after creating file using laptop , re launch the application and choose client
+4) click on YES in the table to open the file specified in first column of that row 
+5) client can access the file if the name of the client is same as the client which is being with with.
+6) after working with the file click on "close all threads" to safely close the file.
