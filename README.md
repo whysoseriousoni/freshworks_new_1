@@ -18,7 +18,8 @@ key---time:{
 File Write is thread safe
 
 Guide to project:
-1) first choose laptop and create the file
+1) first choose laptop and create the AllDataStore.json and File.json(Either on predefined path or External path)
+2) Use functions like Read , Write, Delete to manipulate the file.json
 2) then use close all threads to safely close the file 
 3) after creating file using laptop , re launch the application and choose client
 4) click on YES in the table to open the file specified in first column of that row 
