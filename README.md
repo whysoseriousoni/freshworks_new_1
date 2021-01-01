@@ -26,7 +26,12 @@ Guide to project:
 5) client can access the file if the name of the client is same as the client which is being with with.
 6) after working with the file click on "close all threads" to safely close the file.
 
-Concepts applied to achieve :
+In the last interface / 4th user interface(common for both mode) , 
+1) in order to read: enter the key next to Read button. Then press Read button to read the data from the file . the data will be displayed in the text area next to it
+2) in order to write: enter the key next to Write button and time in seconds in next box(2nd box in Write button row). type the data in json value format . Then press Write button to save the data with or without time.
+3) in order to delete: enter the key next to Delete button. Then press Delete button to delete the data in the file . the data will be deleted in the json file and the delete status will ne displayed
+
+Concepts applied to complete the assignment :
 1) Singleton Class Concept
 2) ThreadGrouping Concept
 3) MultiThreading
